@@ -11,6 +11,3 @@ class Expense(Base):
     expenses = Column(String, nullable=False)
     category = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
-    municipality = Column(String)
-    province = Column(String)
-    region = Column(String)
