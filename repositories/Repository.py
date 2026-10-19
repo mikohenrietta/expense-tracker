@@ -17,7 +17,17 @@ class ExpenseRepository:
 
     def get_all(self):
         with self.Session() as session:
-            return session.query(Expense).all()
+            return session.query(Expense).order_by(Expense.date.desc(), Expense.id.desc()).all()
+
+    def update(self, expense_id: int, **fields):
+        with self.Session() as session:
+            expense = session.query(Expense).filter_by(id=expense_id).first()
+            if expense:
+                for name, value in fields.items():
+                    setattr(expense, name, value)
+                session.commit()
+                return True
+            return False
 
     def delete(self, expense_id: int):
         with self.Session() as session:
