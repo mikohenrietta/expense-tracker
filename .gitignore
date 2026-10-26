@@ -222,3 +222,6 @@ __marimo__/
 # AI assistant config
 .claude/
 .agents/
+
+# For the database
+*.db
