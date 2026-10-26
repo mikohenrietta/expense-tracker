@@ -5,7 +5,7 @@ Run the following commands in the terminal to get started:
 - To install the libraries needed:
 `pip install streamlit pandas sqlalchemy openpyxl`
 - To initialise the database: `python seed.py`
-- To run the application: `streamlit run app.py`
+- To run the application: `streamlit run UI.py`
 
 The first two only need to be executed only once, when you clone the repository, and the third one is used whenever you want to re-run the app.
 ### What these libraries are exactly
