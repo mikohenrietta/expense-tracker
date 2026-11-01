@@ -5,8 +5,9 @@ from models.Expense import Expense
 
 
 class ExpenseService:
-    def __init__(self):
-        self.repo = ExpenseRepository()
+    def __init__(self, repo=None):
+        # Passing a repo makes testing easy (e.g. an in-memory database)
+        self.repo = repo or ExpenseRepository()
 
     def add_expense(self, date_str, expenses, category, amount):
         # Business logic: Convert string to date object
