@@ -1,5 +1,6 @@
 import streamlit as st
 from services.Service import ExpenseService
+from filters import apply_filters
 
 st.set_page_config(page_title="Expense tracker", layout="wide")
 
@@ -102,12 +103,17 @@ if df.empty:
     st.info("No expenses yet. Add one from the sidebar.")
     st.stop()
 
+filtered = apply_filters(df)                       # NEW
+if filtered.empty:                                 # NEW
+    st.warning("No expenses match the filters.")   # NEW
+    st.stop()                                      # NEW
+
 with st.container(horizontal=True, vertical_alignment="bottom"):
     st.subheader("Expenses")
     st.caption("Select a row to edit or delete it.")
 
 event = st.dataframe(
-    df,
+    filtered,
     hide_index=True,
     column_order=["Date", "Expenses", "Category", "Amount"],
     column_config={
@@ -122,7 +128,7 @@ event = st.dataframe(
 )
 
 selected_rows = event.selection.rows
-selected = df.iloc[selected_rows[0]] if selected_rows else None
+selected = filtered.iloc[selected_rows[0]] if selected_rows else None
 
 with st.container(horizontal=True):
     if st.button("Edit", icon=":material/edit:", disabled=selected is None):
