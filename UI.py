@@ -1,6 +1,7 @@
 import streamlit as st
 from services.Service import ExpenseService
 from filters import apply_filters
+from charts import render_charts, render_summary
 
 st.set_page_config(page_title="Expense tracker", layout="wide")
 
@@ -107,6 +108,10 @@ filtered = apply_filters(df)                       # NEW
 if filtered.empty:                                 # NEW
     st.warning("No expenses match the filters.")   # NEW
     st.stop()                                      # NEW
+
+render_summary(filtered)                    # NEW
+with st.expander("Charts", expanded=True):  # NEW
+    render_charts(filtered)                 # NEW
 
 with st.container(horizontal=True, vertical_alignment="bottom"):
     st.subheader("Expenses")
