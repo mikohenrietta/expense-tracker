@@ -2,13 +2,22 @@ import pandas as pd
 from sqlalchemy import create_engine
 from pathlib import Path
 from models.Expense import Base
-
+from sqlalchemy import text
+from repositories.Repository import DEFAULT_DB_URL
 # 1. Set up the SQLite database connection
 # This will create 'expenses.db' in your folder if it doesn't exist
-engine = create_engine("sqlite:///expenses.db")
+engine = create_engine(DEFAULT_DB_URL)
 
 # Create the tables based on your model.py
 Base.metadata.create_all(engine)
+
+# Don't seed twice: running this script again would duplicate every row
+with engine.connect() as conn:
+    existing = conn.execute(text("SELECT COUNT(*) FROM expenses")).scalar()
+if existing:
+    print(f"Database already has {existing} rows - nothing to do.")
+    print("To start over, delete expenses.db and run this script again.")
+    raise SystemExit
 
 # 2. Read the Excel file
 print("Loading data from Excel...")
