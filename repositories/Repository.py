@@ -1,9 +1,14 @@
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.Expense import Base, Expense
 
+
+DB_PATH = Path(__file__).resolve().parent.parent / "expenses.db"
+DEFAULT_DB_URL = f"sqlite:///{DB_PATH}"
+
 class ExpenseRepository:
-    def __init__(self, db_url="sqlite:///expenses.db"):
+    def __init__(self, db_url=DEFAULT_DB_URL):
         self.engine = create_engine(db_url)
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine)
